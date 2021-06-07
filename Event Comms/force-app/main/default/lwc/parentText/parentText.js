@@ -5,6 +5,7 @@ export default class ParentText extends LightningElement {
 
     handleChange(event) {
         this.nameText = event.target.value; 
+        this.template.querySelector('c-child-text').sampleText = this.nameText;
     }
 
     submitText() {
