@@ -19,7 +19,7 @@ public with sharing class NumberGuesser {
         Integer totalGuesses = 0;
         Boolean success = false;
         Boolean numberHigher = false;
-        while (totalGuesses <= limits) {
+        while (totalGuesses < limits) {
             if (lastGuess != null && numberHigher) {
                 lowLimit = lastGuess;
             } else if (lastGuess != null) {
