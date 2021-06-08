@@ -15,11 +15,11 @@ public with sharing class NumberGuesser {
         this.actualNumber = seedNumber;
     }
 
-    public void guessNumber(Integer limits) {
-        Integer totalGuesses = 0;
-        Boolean success = false;
+
+    public GuessResult guessNumber(Integer limits, Boolean debug) {
+        GuessResult result = new GuessResult();
         Boolean numberHigher = false;
-        while (totalGuesses < limits) {
+        while (result.NumberGuesses < limits) {
             if (lastGuess != null && numberHigher) {
                 lowLimit = lastGuess;
             } else if (lastGuess != null) {
@@ -27,19 +27,24 @@ public with sharing class NumberGuesser {
             }
 
             lastGuess = (highLimit + lowLimit) / 2;
-            totalGuesses++;
-            String result = checkGuess();
-            System.debug('The guess was ' + lastGuess + ' and the result was: ' + result);
-            if (result == 'CORRECT') {
-                success = true;
+            result.NumberGuesses++;
+            String guess = checkGuess();
+            if (debug) {
+                System.debug('The guess was ' + lastGuess + ' and the result was: ' + guess);
+            }
+            if (guess == 'CORRECT') {
+                result.Success = true;
                 break;
             } else {
-                numberHigher = result == 'HIGHER';
+                numberHigher = (guess == 'HIGHER');
             }
         }
-        System.debug('Ran ' + totalGuesses + ' guesses.');
-        String endMessage = success ? 'There was success!' : 'The system could not find the answer.';
-        System.debug(endMessage);
+        if (debug) {
+            System.debug('Ran ' + result.NumberGuesses + ' guesses.');
+            String endMessage = result.Success ? 'There was success!' : 'The system could not find the answer.';
+            System.debug(endMessage);
+        }
+        return result;
     }
 
 
@@ -53,5 +58,14 @@ public with sharing class NumberGuesser {
         }
     }
 
+    public class GuessResult {
+        public Integer NumberGuesses;
+        public Boolean Success;
+
+        public GuessResult() {
+            this.NumberGuesses = 0;
+            this.Success = false;
+        }
+    }
     public class NumberGuesserException extends Exception {}
 }
