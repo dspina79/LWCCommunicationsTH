@@ -15,6 +15,33 @@ public with sharing class NumberGuesser {
         this.actualNumber = seedNumber;
     }
 
+    public void runGuessSimulation(Integer iterations, Integer limits) {
+        Integer successes = 0;
+        List<Integer> successfulTries = new List<Integer>();
+
+        for (Integer i = 0; i < iterations; i++) {
+            GuessResult result = guessNumber(limits, false);
+            if (result.Success) {
+                successes++;
+                successfulTries.add(result.NumberGuesses);
+            }
+        }
+
+        System.debug('Total successes: ' + successes);
+        Map<Integer, Integer> tries = new Map<Integer, Integer>();
+        for (Integer successTry : successfulTries) {
+            if (tries.get(successTry) != null) {
+                tries.put(successTry, 0);
+            } else {
+                Integer current = tries.get(successTry) + 1;
+                tries.put(successTry, current);
+            }
+        }
+
+        for (Integer key : tries.keySet()) {
+            System.debug('Try:\t' + key + ' - ' + tries.get(key));
+        }
+    }
 
     public GuessResult guessNumber(Integer limits, Boolean debug) {
         GuessResult result = new GuessResult();
