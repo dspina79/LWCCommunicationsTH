@@ -1,2 +1,2 @@
 NumberGuesser g = new NumberGuesser();
-g.guessNumber(8);
+g.runGuessSimulation(10, 1000);

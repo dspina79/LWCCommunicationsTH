@@ -30,8 +30,8 @@ public with sharing class NumberGuesser {
         System.debug('Total successes: ' + successes);
         Map<Integer, Integer> tries = new Map<Integer, Integer>();
         for (Integer successTry : successfulTries) {
-            if (tries.get(successTry) != null) {
-                tries.put(successTry, 0);
+            if (tries.get(successTry) == null) {
+                tries.put(successTry, 1);
             } else {
                 Integer current = tries.get(successTry) + 1;
                 tries.put(successTry, current);
